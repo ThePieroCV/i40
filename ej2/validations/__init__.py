@@ -41,18 +41,6 @@ def validate_model_1(model):
         "El modelo debe ser una instancia de 'LinearRegression'."
     print("✅ Tipo de modelo correcto: LinearRegression.")
 
-    # 2. Verificar que el atributo 'random_state' existe
-    # Nota: La clase estándar de sklearn.linear_model.LinearRegression no tiene este parámetro.
-    # Se asume una clase personalizada o una versión que lo soporte para este ejercicio.
-    assert hasattr(model, 'random_state'), \
-        "El modelo LinearRegression no tiene el atributo 'random_state'. " \
-        "Asegúrate de que la clase que usas lo soporte y lo hayas incluido como parámetro."
-    
-    # 3. Verificar que el valor de 'random_state' es 42
-    assert model.random_state == 42, \
-        f"El 'random_state' debe ser 42, pero se encontró el valor '{model.random_state}'."
-    print("✅ 'random_state' configurado correctamente.")
-
     print("\n🎉 ¡Verificación exitosa! El modelo fue instanciado correctamente.")
 
 
