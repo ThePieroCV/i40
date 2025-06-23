@@ -4,8 +4,8 @@ Funciones principales para ejecutar el agente multimedia de manera abstraída.
 
 import os
 import google.generativeai as genai
-from pc2.utils import preparar_entrada
-from pc2.logger import get_logger, set_debug_mode
+from i40.pc2.utils import preparar_entrada
+from i40.pc2.logger import get_logger, set_debug_mode
 
 
 def ejecutar_agente_multimedia(grafo, archivo_path, pregunta, api_key=None, debug=False):

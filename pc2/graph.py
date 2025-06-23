@@ -3,7 +3,7 @@ Funciones auxiliares para la construcción del grafo.
 """
 
 from langgraph.graph import StateGraph, END
-from pc2.state import AgentState
+from i40.pc2.state import AgentState
 
 
 def crear_grafo_base():

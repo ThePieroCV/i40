@@ -10,7 +10,7 @@ import numpy as np
 from PIL import Image
 from io import BytesIO
 from typing import List, Tuple
-from pc2.logger import get_logger
+from i40.pc2.logger import get_logger
 
 
 def extraer_frames_video(video_bytes: bytes, num_frames: int = 6) -> List[Image.Image]:

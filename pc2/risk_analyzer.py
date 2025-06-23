@@ -8,8 +8,8 @@ en imágenes de equipos y entornos industriales.
 import google.generativeai as genai
 from PIL import Image
 from typing import List, Dict, Any
-from pc2.models import TipoEquipo
-from pc2.logger import get_logger
+from i40.pc2.models import TipoEquipo
+from i40.pc2.logger import get_logger
 
 
 class RiskAnalyzer:

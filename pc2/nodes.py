@@ -8,12 +8,12 @@ Incluye nodos para procesamiento de imágenes y videos.
 
 import google.generativeai as genai
 from typing import Dict, Any, List
-from pc2.state import AgentState
-from pc2.tools import buscar_informacion_tecnica
-from pc2.models import TipoEquipo, IdentificacionEquipo
-from pc2.logger import get_logger
-from pc2.video_processor import extraer_frames_video, validar_formato_video
-from pc2.risk_analyzer import analizar_riesgos_frame_simple, RiskAnalyzer
+from i40.pc2.state import AgentState
+from i40.pc2.tools import buscar_informacion_tecnica
+from i40.pc2.models import TipoEquipo, IdentificacionEquipo
+from i40.pc2.logger import get_logger
+from i40.pc2.video_processor import extraer_frames_video, validar_formato_video
+from i40.pc2.risk_analyzer import analizar_riesgos_frame_simple, RiskAnalyzer
 import base64
 from io import BytesIO
 from PIL import Image
