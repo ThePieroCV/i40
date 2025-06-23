@@ -12,6 +12,7 @@ from roboflow import Roboflow
 from tqdm.notebook import tqdm
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import visualkeras
 
 # --- CONFIGURACIÓN GLOBAL ---
 IMAGE_SIZE = (224, 224)
@@ -292,5 +293,6 @@ def run_lab(api_key, backbone_builder, epochs=15):
     print("\n🎉 ¡Laboratorio finalizado!")
     return detector
 
-
-
+def verify_backbone(model):
+    model.summary()
+    return visualkeras.layered_view(model, legend=True)
