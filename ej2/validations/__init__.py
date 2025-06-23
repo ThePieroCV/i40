@@ -28,7 +28,7 @@ def validate_regression(features, target):
     print("\n🎉 ¡Excelente! Las variables 'features' y 'target' están listas para el siguiente paso.")
 
 
-def validate_regression_model2(model):
+def validate_regression_model1(model):
     """
     Valida que el modelo sea una instancia correcta de LinearRegression
     y que tenga el random_state configurado en 42.
