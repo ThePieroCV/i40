@@ -1,0 +1,17 @@
+Documento Técnico: Robot Móvil Educativo Robotino v3
+Fabricante: Festo Didactic
+
+Descripción General:
+El Robotino es una plataforma robótica móvil diseñada para la educación y la investigación en logística y automatización. Su chasis es omnidireccional, permitiendo movimientos en cualquier dirección sin necesidad de girar.
+
+Componentes y Sensores:
+- Sensores de Proximidad: Nueve sensores infrarrojos de distancia para detectar obstáculos.
+- Sensores de Choque: Un parachoques de seguridad perimetral que actúa como sensor de contacto.
+- Visión: Cámara USB a color integrada para procesamiento de imágenes.
+- Manipulación: Incluye una pinza de agarre neumática.
+- Señalización: Torre de semáforos (rojo, amarillo, verde) para indicar el estado del robot.
+- Sensores adicionales: Sensores inductivos y ópticos pueden ser acoplados.
+
+Parámetros de Operación:
+- Sistema de Energía: Opera con baterías internas recargables de 24V.
+- Velocidad Máxima de Desplazamiento: 10 km/h.

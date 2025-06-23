@@ -1,0 +1,11 @@
+Ficha Técnica: Proyector Multimedia Epson PowerLite 108
+Proyector para uso en entornos educativos y de negocios.
+
+Detalles Técnicos:
+- Tecnología de Proyección: 3LCD.
+- Luminosidad (Brillo): 3,700 lúmenes.
+- Resolución Nativa: XGA (1024 x 768).
+- Ratio de Contraste: 15,000:1.
+- Duración Máxima de la Lámpara: Hasta 12,000 horas en modo ECO.
+- Conectividad: HDMI, VGA, USB Tipo A, USB Tipo B.
+- No se recomienda su uso continuo por más de 8 horas para preservar la vida útil de la lámpara.

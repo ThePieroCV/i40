@@ -1,0 +1,12 @@
+langchain
+langgraph
+google-generativeai
+Pillow
+jupyter
+ipython
+matplotlib
+python-dotenv
+pydantic>=2.0.0
+opencv-python>=4.5.0
+moviepy>=1.0.3
+ffmpeg-python>=0.2.0

@@ -1,0 +1,10 @@
+Especificaciones: Ventilador de Pedestal Industrial V-45
+Diseñado para la circulación de aire en grandes espacios como almacenes o talleres.
+
+Características:
+- Modos de Funcionamiento: Tres (3) velocidades de operación (Baja, Media, Alta).
+- Velocidad Máxima de Rotación: 1350 RPM (Revoluciones por minuto).
+- Potencia del Motor: 120W.
+- Eficiencia Energética: Grado B.
+- Oscilación: Función de oscilación horizontal de 90 grados.
+- Material: Aspas de metal, rejilla de seguridad de acero.

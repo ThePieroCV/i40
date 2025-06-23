@@ -1,0 +1,10 @@
+Manual de Operación: Compresor de Aire Silencioso Modelo C-200
+
+Este compresor está diseñado para uso en talleres y laboratorios que requieren un bajo nivel de ruido.
+- Voltaje de Operación: 220V, 50/60Hz. Requiere una conexión monofásica.
+- Consumo de Corriente: 20 Amperios.
+- Potencia del Motor: 2.5 HP (Caballos de fuerza).
+- Capacidad del Tanque: 50 litros.
+- Presión Máxima de Trabajo: 10 bar (equivalente a 145 PSI).
+- Flujo de Aire: 150 L/min.
+- Nivel de Ruido: 60 dB.

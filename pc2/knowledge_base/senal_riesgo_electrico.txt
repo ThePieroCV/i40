@@ -1,0 +1,9 @@
+Descripción: Señal de Advertencia de Pared - Riesgo Eléctrico
+
+Esta señal se utiliza para advertir de la presencia de equipos o paneles eléctricos que presentan un peligro de electrocución.
+- Tipo de Señal: Advertencia.
+- Criticidad: Alta. La ignorancia de esta señal puede resultar en lesiones graves o la muerte.
+- Símbolo Gráfico: Triángulo amarillo con borde negro, conteniendo un pictograma de un rayo negro.
+- Estándar de Cumplimiento: ISO 7010 - W012.
+- Material: Poliestireno rígido.
+- Dimensiones: 20cm x 30cm.

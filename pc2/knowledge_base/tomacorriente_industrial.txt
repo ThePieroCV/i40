@@ -1,0 +1,11 @@
+Ficha Técnica: Tomacorriente Industrial NEMA L6-20R
+Este dispositivo es un conector eléctrico de grado industrial diseñado para aplicaciones de alta carga. Su principal característica es el mecanismo de cierre por torsión (twist-lock) que previene desconexiones accidentales.
+
+Especificaciones Técnicas:
+- Tipo: Industrial, Cierre por torsión
+- Configuración: Monofásico, 2 Polos, 3 Hilos (2P, 3W)
+- Voltaje Nominal: 250V AC
+- Amperaje Máximo: 20 Amperios
+- Potencia Máxima Soportada: 5000W
+- Material: Cuerpo de nylon superresistente con contactos de latón.
+- Certificaciones: Listado UL y certificado CSA.
