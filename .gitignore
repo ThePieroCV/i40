@@ -1,5 +1,8 @@
 # User defined files
 **.ipynb
+yolo11n.pt
+runs/
+Hard-Hat-Detector-1/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
