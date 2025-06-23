@@ -11,6 +11,7 @@ from keras import layers
 from roboflow import Roboflow
 from tqdm.notebook import tqdm
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 # --- CONFIGURACIÓN GLOBAL ---
 IMAGE_SIZE = (224, 224)
@@ -93,9 +94,9 @@ def load_and_preprocess(image_path, annotation_path):
     h_orig = tf.maximum(h_orig, 1.0)
     w_orig = tf.maximum(w_orig, 1.0)
     box_normalized = tf.stack([box[0]/w_orig, box[1]/h_orig, box[2]/w_orig, box[3]/h_orig])
-    return image_resized, (box_normalized, has_object)
+    return image_resized, (box_normalized, has_object), image, box, annotation_path
 
-def filter_invalid_data(img_resized, labels):
+def filter_invalid_data(img_resized, labels, img_orig, box_orig, ann_path):
     return labels[1] >= 0
 
 def create_tf_dataset(dataset_location):
@@ -111,15 +112,25 @@ def create_tf_dataset(dataset_location):
                     image_paths.append(os.path.join(data_dir_path, file_name))
                     annotation_paths.append(annotation_file)
         return image_paths, annotation_paths
+    
     train_img, train_ann = get_filepaths("train")
     val_img, val_ann = get_filepaths("valid")
     
-    train_ds = tf.data.Dataset.from_tensor_slices((train_img, train_ann)).map(load_and_preprocess, num_parallel_calls=AUTOTUNE).filter(filter_invalid_data)
-    val_ds = tf.data.Dataset.from_tensor_slices((val_img, val_ann)).map(load_and_preprocess, num_parallel_calls=AUTOTUNE).filter(filter_invalid_data)
+    train_ds = tf.data.Dataset.from_tensor_slices((train_img, train_ann)).map(
+        load_and_preprocess, num_parallel_calls=AUTOTUNE
+    ).filter(filter_invalid_data)
     
-    train_ds_batched = train_ds.shuffle(1024).batch(BATCH_SIZE).prefetch(AUTOTUNE)
-    val_ds_batched = val_ds.batch(BATCH_SIZE).prefetch(AUTOTUNE)
-    return train_ds_batched, val_ds_batched
+    val_ds = tf.data.Dataset.from_tensor_slices((val_img, val_ann)).map(
+        load_and_preprocess, num_parallel_calls=AUTOTUNE
+    ).filter(filter_invalid_data)
+    
+    train_ds_model = train_ds.map(lambda img_r, lbls, *args: (img_r, lbls))
+    val_ds_model = val_ds.map(lambda img_r, lbls, *args: (img_r, lbls))
+    
+    train_ds_batched = train_ds_model.shuffle(1024).batch(BATCH_SIZE).prefetch(AUTOTUNE)
+    val_ds_batched = val_ds_model.batch(BATCH_SIZE).prefetch(AUTOTUNE)
+    
+    return train_ds_batched, val_ds_batched, val_ds
 
 # --- CLASE DEL MODELO Y FUNCIONES DE ENTRENAMIENTO ---
 
@@ -214,7 +225,40 @@ def plot_training_history(history):
     axes[1, 1].set(xlabel='Época', ylabel='Accuracy'); axes[1, 1].legend()
     
     plt.tight_layout(rect=[0, 0, 1, 0.96]); plt.show()
-    
+
+
+def visualize_predictions(model, dataset, num_samples=5):
+    print("\n🖼️  Visualizando predicciones del modelo...")
+    print("Verde = Ground Truth | Rojo = Predicción")
+    samples_shown = 0
+    for img_resized, (box_normalized, has_object), img_orig, box_orig, ann_path in dataset:
+        if samples_shown >= num_samples: break
+        pred_boxes_normalized, pred_objectness_logits = model.predict(tf.expand_dims(img_resized, axis=0))
+        pred_objectness = tf.sigmoid(pred_objectness_logits[0, 0]).numpy()
+        pred_has_object = pred_objectness > 0.5
+        img_to_show = img_orig.numpy().astype("uint8")
+        h, w, _ = img_to_show.shape
+        fig, ax = plt.subplots(1, figsize=(10, 10))
+        ax.imshow(img_to_show)
+        if has_object == 1:
+            gt_xmin, gt_ymin, gt_xmax, gt_ymax = box_orig.numpy()
+            rect_gt = patches.Rectangle((gt_xmin, gt_ymin), gt_xmax - gt_xmin, gt_ymax - gt_ymin, linewidth=2, edgecolor='lime', facecolor='none', label='Ground Truth')
+            ax.add_patch(rect_gt)
+        if pred_has_object:
+            pred_xmin = int(pred_boxes_normalized[0][0] * w)
+            pred_ymin = int(pred_boxes_normalized[0][1] * h)
+            pred_xmax = int(pred_boxes_normalized[0][2] * w)
+            pred_ymax = int(pred_boxes_normalized[0][3] * h)
+            rect_pred = patches.Rectangle((pred_xmin, pred_ymin), pred_xmax - pred_xmin, pred_ymax - pred_ymin, linewidth=2, linestyle='--', edgecolor='red', facecolor='none', label=f'Predicción (conf: {pred_objectness:.2f})')
+            ax.add_patch(rect_pred)
+        status = f"GT: {'Objeto presente' if has_object == 1 else 'Sin objeto'} | Pred: {'Objeto detectado' if pred_has_object else 'No detectado'}"
+        ax.set_title(status, fontsize=14)
+        ax.legend(loc='upper left')
+        plt.axis('off')
+        plt.tight_layout()
+        plt.show()
+        samples_shown += 1
+
 # --- FUNCIÓN PRINCIPAL ORQUESTADORA ---
 
 def run_lab(api_key, backbone_builder, epochs=15):
@@ -223,7 +267,7 @@ def run_lab(api_key, backbone_builder, epochs=15):
     filtered_dataset_path = filter_and_copy_single_object_dataset(original_dataset_path)
     
     print("\n📦 Creando los datasets de TensorFlow desde la carpeta filtrada...")
-    train_ds, val_ds = create_tf_dataset(filtered_dataset_path)
+    train_ds, val_ds, val_ds_visualize = create_tf_dataset(filtered_dataset_path)
     print("✅ Datasets listos.")
     
     print("\n🔧 Construyendo el detector de clase única...")
@@ -241,6 +285,12 @@ def run_lab(api_key, backbone_builder, epochs=15):
     
     print("\n📈 Graficando historial de entrenamiento...")
     plot_training_history(history)
+
+    print("\nMostrando predicciones")
+    visualize_predictions(detector, val_ds_visualize, num_samples=10)
     
     print("\n🎉 ¡Laboratorio finalizado!")
     return detector
+
+
+
