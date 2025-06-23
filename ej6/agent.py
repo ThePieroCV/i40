@@ -4,8 +4,8 @@ Funciones principales para ejecutar el agente de manera abstraída.
 
 import os
 import google.generativeai as genai
-from ej6.utils import preparar_entrada
-from ej6.logger import get_logger, set_debug_mode
+from i40.ej6.utils import preparar_entrada
+from i40.ej6.logger import get_logger, set_debug_mode
 
 
 def ejecutar_agente(grafo, archivo_path, pregunta, api_key=None, debug=False):

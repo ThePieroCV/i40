@@ -8,8 +8,8 @@ que permite buscar información específica en la base de conocimiento.
 import os
 import google.generativeai as genai
 from typing import Optional
-from ej6.logger import get_logger
-from ej6.models import TipoEquipo
+from i40.ej6.logger import get_logger
+from i40.ej6.models import TipoEquipo
 
 
 def buscar_informacion_tecnica(equipo: TipoEquipo, pregunta_usuario: str) -> str:

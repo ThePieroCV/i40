@@ -7,10 +7,10 @@ Cada función recibe el estado actual y retorna las actualizaciones necesarias.
 
 import google.generativeai as genai
 from typing import Dict, Any
-from ej6.state import AgentState
-from ej6.tools import buscar_informacion_tecnica
-from ej6.models import TipoEquipo, IdentificacionEquipo
-from ej6.logger import get_logger
+from i40.ej6.state import AgentState
+from i40.ej6.tools import buscar_informacion_tecnica
+from i40.ej6.models import TipoEquipo, IdentificacionEquipo
+from i40.ej6.logger import get_logger
 import base64
 from io import BytesIO
 from PIL import Image
