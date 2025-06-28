@@ -24,3 +24,4 @@ class AgentState(TypedDict):
     nombre_equipo: Optional[str]
     info_recuperada: Optional[str]
     respuesta_final: Optional[str]
+    observacion : Optional[str]

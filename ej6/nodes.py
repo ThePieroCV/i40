@@ -108,6 +108,8 @@ def identificar_equipo_vision(state: AgentState) -> Dict[str, Any]:
         Equipos válidos:
         {lista_equipos}
         
+        Tu respuesta contiene dos partes. La primera corresponde al objeto identificado:
+        
         Responde ÚNICAMENTE con uno de estos valores exactos (sin espacios ni caracteres extra):
         - COMPRESOR_AIRE
         - ROBOTINO_FESTO
@@ -117,27 +119,34 @@ def identificar_equipo_vision(state: AgentState) -> Dict[str, Any]:
         - SENAL_RIESGO_ELECTRICO
         - EQUIPO_NO_IDENTIFICADO (si no puedes identificar ninguno)
         
-        Tu respuesta debe ser exactamente uno de estos valores, nada más.
+        Esta primera parte debe ser exactamente uno de estos valores, nada más.
+
+        Tu segunda respuesta debe contener detalles de la observacion de la imagen. Incluye cualquier medicion o caracteristica particular que puedas ver.
+        
+        La respuesta debe ser un texto, donde la primera coma separa la primera de la segunda respuesta.
+        Tu respuesta debe estar en el formato:
+        "PRIMERA_RESPUESTA,segunda respuesta, puede tener este formato con comas"
         """
         
         logger.debug("Enviando imagen y prompt estructurado a Gemini...")
         response = model.generate_content([prompt, imagen])
-        respuesta_texto = response.text.strip().upper()
+        respuesta_texto = response.text.strip().upper().split(",")
+        p1_clasificacion, p2_observacion= respuesta_texto[0].strip(), ",".join(respuesta_texto[1:]).strip()
         
         logger.debug(f"Respuesta raw de Gemini: '{respuesta_texto}'")
         
         # Intentar convertir la respuesta a enum
         try:
-            equipo_enum = TipoEquipo[respuesta_texto]
+            equipo_enum = TipoEquipo[p1_clasificacion]
             logger.debug(f"Equipo identificado exitosamente: {equipo_enum.name}")
-            return {"nombre_equipo": equipo_enum}
+            return {"nombre_equipo": equipo_enum, "observacion": p2_observacion}
         except KeyError:
-            logger.warning(f"Respuesta no válida de Gemini: '{respuesta_texto}', usando EQUIPO_NO_IDENTIFICADO")
-            return {"nombre_equipo": TipoEquipo.EQUIPO_NO_IDENTIFICADO}
+            logger.warning(f"Respuesta no válida de Gemini: '{p1_clasificacion}', usando EQUIPO_NO_IDENTIFICADO")
+            return {"nombre_equipo": TipoEquipo.EQUIPO_NO_IDENTIFICADO, "observacion": p2_observacion}, 
         
     except Exception as e:
         logger.error(f"Error en identificación: {str(e)}")
-        return {"nombre_equipo": TipoEquipo.EQUIPO_NO_IDENTIFICADO}
+        return {"nombre_equipo": TipoEquipo.EQUIPO_NO_IDENTIFICADO, "observacion": "No se observaron particularidades"}
 
 
 def recuperar_informacion_especifica(state: AgentState) -> Dict[str, Any]:
@@ -188,6 +197,7 @@ def sintetizar_respuesta_final(state: AgentState) -> Dict[str, Any]:
     
     info_recuperada = state.get("info_recuperada", "")
     equipo_enum = state.get("nombre_equipo")
+    observacion = state.get("observacion")
     pregunta_usuario = state.get("entrada_usuario", {}).get("pregunta", "")
     
     # Obtener nombre amigable del equipo
@@ -209,12 +219,15 @@ def sintetizar_respuesta_final(state: AgentState) -> Dict[str, Any]:
         Equipo identificado: {nombre_amigable}
         Pregunta del usuario: {pregunta_usuario}
         Información técnica encontrada: {info_recuperada}
+        Observacion: {observacion}
         
         La respuesta debe:
         1. Confirmar qué equipo se identificó en la imagen
         2. Responder directamente a la pregunta del usuario
-        3. Ser clara, concisa y profesional
-        4. Si no se encontró información específica, explicarlo amablemente
+        3. Utilizar la observacion para complementar la respuesta
+        4. En caso la observacion no tenga relacion con la pregunta, mencionar la observacion como un cierre de la respuesta.
+        5. Ser clara, concisa y profesional
+        6. Si no se encontró información específica, explicarlo amablemente
         
         Respuesta:
         """
